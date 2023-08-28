@@ -14,7 +14,6 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     checkTokenAndNavigate();
     super.initState();
 

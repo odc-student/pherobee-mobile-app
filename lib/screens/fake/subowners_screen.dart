@@ -43,7 +43,7 @@ class SubownersScreen extends StatelessWidget {
                                           .associateFarmToSubowner(
                                               e.sId!,
                                               state
-                                                  .beekeeper.beehives![0].sId!);
+                                                  .beekeeper.farms![0].sId!);
                                     },
                                     child: const Text("associate")),
                                 TextButton(
@@ -53,7 +53,7 @@ class SubownersScreen extends StatelessWidget {
                                           .deleteFarmFromSubowner(
                                               e.sId!,
                                               state
-                                                  .beekeeper.beehives![0].sId!);
+                                                  .beekeeper.farms![0].sId!);
                                     },
                                     child: const Text("delete")),
                               ],

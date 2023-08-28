@@ -191,11 +191,11 @@ class BeekeeperService {
   }
 
   Future<void> associateFarmToSubowner(
-      String token, String farmId, String beehiveId) async {
+      String token,  String subownerId,String farmId) async {
     try {
       var map = <String, dynamic>{};
       map['farmId'] = farmId;
-      map['beehiveId'] = beehiveId;
+      map['subownerId'] = subownerId;
       final response = await http.post(
           Uri.parse(
             "http://10.0.2.2:5000/v1/api/beekeepers/associate/farm_to_subowner",
@@ -204,9 +204,11 @@ class BeekeeperService {
           body: map);
 
       if (response.statusCode != 200) {
+        print("error != 200");
         throw Exception("No data found");
       }
       if (response.statusCode == 400) {
+        print("error == 400");
         throw Exception("No data found");
       }
     } catch (e) {
@@ -215,11 +217,11 @@ class BeekeeperService {
   }
 
   Future<void> deleteFarmFromSubowner(
-      String token, String farmId, String beehiveId) async {
+      String token, String subownerId, String farmId) async {
     try {
       var map = <String, dynamic>{};
       map['farmId'] = farmId;
-      map['beehiveId'] = beehiveId;
+      map['subownerId'] = subownerId;
       final response = await http.delete(
           Uri.parse(
             "http://10.0.2.2:5000/v1/api/beekeepers/delete/farm_from_subowner",
