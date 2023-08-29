@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pherobee/models/api_response.dart';
 import 'package:pherobee/models/beekeeper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,9 +19,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      Beekeeper beekeeper = await _beekeeperRepository.loadProfile(token);
+      ApiResponse<Beekeeper> beekeeper = await _beekeeperRepository.loadProfile(token);
       // _saveProfile(beekeeper);
-      emit(ProfileLoaded(beekeeper));
+      emit(ProfileLoaded(beekeeper.body!));
     } catch (e) {
       emit(ProfileError(e.toString()));
     }

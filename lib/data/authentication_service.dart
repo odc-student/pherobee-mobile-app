@@ -3,9 +3,11 @@ import "dart:math";
 import "package:http/http.dart" as http;
 import "package:pherobee/models/login_response.dart";
 
+import "../models/api_response.dart";
+
 class AuthenticationService {
 
-  Future<LoginResponse> signIn(email, password) async {
+  Future<ApiResponse<LoginResponse>> signIn(email, password) async {
     try {
       var map = <String, dynamic>{};
       map['email'] = email;
@@ -20,7 +22,7 @@ class AuthenticationService {
       );
       if (response.statusCode == 200) {
 
-        var data = LoginResponse.fromJson(jsonDecode(response.body));
+        var data = ApiResponse.fromJson(jsonDecode(response.body),LoginResponse.fromJson);
 
         return data;
       } else {

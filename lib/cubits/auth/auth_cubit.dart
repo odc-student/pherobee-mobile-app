@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:pherobee/models/api_response.dart';
 import 'package:pherobee/repositories/beekeeper_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,10 +19,11 @@ class AuthCubit extends Cubit<AuthState> {
   void signIn(String email, String password) async {
     emit(AuthInProgress());
     try {
-      LoginResponse result = await _authRepository.signIn(email, password);
-      if (result.success!) {
-        _saveToken( result.token!);
-        emit(AuthSuccess(loginResponse: result));
+
+      ApiResponse<LoginResponse> result = await _authRepository.signIn(email, password);
+      if (result.header!.success!) {
+        _saveToken( result.body!.token!);
+        emit(AuthSuccess(loginResponse: result.body!));
       } else {
         emit(AuthFailed(error: "Couldn't Authenticate, try again"));
       }

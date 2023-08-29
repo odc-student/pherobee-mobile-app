@@ -1,11 +1,12 @@
 import "dart:convert";
 import "dart:io";
 import "package:http/http.dart" as http;
+import "package:pherobee/models/api_response.dart";
 import "package:pherobee/models/beekeeper.dart";
 import "package:pherobee/models/login_response.dart";
 
 class BeekeeperService {
-  Future<Beekeeper> loadProfile(String token) async {
+  Future<ApiResponse<Beekeeper>> loadProfile(String token) async {
     try {
       final response = await http.get(
         Uri.parse(
@@ -14,8 +15,8 @@ class BeekeeperService {
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
-      if (response.statusCode == 200) {
-        var data = Beekeeper.fromJson(jsonDecode(response.body));
+      if (response.statusCode != 500) {
+        var data = ApiResponse.fromJson(jsonDecode(response.body),Beekeeper.fromJson);
         return data;
       } else {
         throw Exception("No data found");
