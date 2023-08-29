@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/cubits/profile/profile_cubit.dart';
 
+import 'home_screen.dart';
+
 class SubownersScreen extends StatelessWidget {
   const SubownersScreen({super.key});
 
@@ -40,20 +42,16 @@ class SubownersScreen extends StatelessWidget {
                                     onPressed: () {
                                       context
                                           .read<ProfileCubit>()
-                                          .associateFarmToSubowner(
-                                              e.sId!,
-                                              state
-                                                  .beekeeper.farms![0].sId!);
+                                          .associateFarmToSubowner(e.sId!,
+                                              state.beekeeper.farms![0].sId!);
                                     },
                                     child: const Text("associate")),
                                 TextButton(
                                     onPressed: () {
                                       context
                                           .read<ProfileCubit>()
-                                          .deleteFarmFromSubowner(
-                                              e.sId!,
-                                              state
-                                                  .beekeeper.farms![0].sId!);
+                                          .deleteFarmFromSubowner(e.sId!,
+                                              state.beekeeper.farms![0].sId!);
                                     },
                                     child: const Text("delete")),
                               ],
@@ -71,6 +69,8 @@ class SubownersScreen extends StatelessWidget {
                       ],
                     )
                   : const Text("No Subowners here");
+            } else if (state is ProfileError) {
+              return ErrorToLoad(error: state.error);
             } else {
               return const Text("Farms Not available");
             }

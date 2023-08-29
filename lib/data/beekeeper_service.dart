@@ -3,7 +3,6 @@ import "dart:io";
 import "package:http/http.dart" as http;
 import "package:pherobee/models/api_response.dart";
 import "package:pherobee/models/beekeeper.dart";
-import "package:pherobee/models/login_response.dart";
 
 class BeekeeperService {
   Future<ApiResponse<Beekeeper>> loadProfile(String token) async {
@@ -16,7 +15,8 @@ class BeekeeperService {
       );
 
       if (response.statusCode != 500) {
-        var data = ApiResponse.fromJson(jsonDecode(response.body),Beekeeper.fromJson);
+        var data =
+            ApiResponse.fromJson(jsonDecode(response.body), Beekeeper.fromJson);
         return data;
       } else {
         throw Exception("No data found");
@@ -26,7 +26,7 @@ class BeekeeperService {
     }
   }
 
-  Future<void> deleteSubowner(String token, String subownerId) async {
+  Future<Header> deleteSubowner(String token, String subownerId) async {
     try {
       var map = <String, dynamic>{};
       map['subownerId'] = subownerId;
@@ -36,15 +36,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode != 200) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to deleteSubowner');
     }
   }
 
-  Future<void> createSubowner(
+  Future<Header> createSubowner(
       String token, String email, String password) async {
     try {
       var map = <String, dynamic>{};
@@ -56,15 +54,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode == 500) {
-        throw Exception("Error");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to create Subowner');
     }
   }
 
-  Future<void> editSubowner(
+  Future<Header> editSubowner(
       String token, String subownerId, String email, String password) async {
     try {
       var map = <String, dynamic>{};
@@ -77,15 +73,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode == 500) {
-        throw Exception("Error");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to editSubowner');
     }
   }
 
-  Future<void> deleteFarm(String token, String farmId) async {
+  Future<Header> deleteFarm(String token, String farmId) async {
     try {
       var map = <String, dynamic>{};
       map['farmId'] = farmId;
@@ -95,15 +89,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode != 200) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to deleteFarm');
     }
   }
 
-  Future<void> editFarm(
+  Future<Header> editFarm(
       String token, String farmId, String name, String location) async {
     try {
       var map = <String, dynamic>{};
@@ -116,15 +108,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode != 200) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to editFarm');
     }
   }
 
-  Future<void> createFarm(String token, String name, String location) async {
+  Future<Header> createFarm(String token, String name, String location) async {
     try {
       var map = <String, dynamic>{};
       map['name'] = name;
@@ -135,15 +125,13 @@ class BeekeeperService {
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
-      if (response.statusCode != 201) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Failed to createFarm');
     }
   }
 
-  Future<void> associateBeehiveToFarm(
+  Future<Header> associateBeehiveToFarm(
       String token, String farmId, String beehiveId) async {
     try {
       var map = <String, dynamic>{};
@@ -156,18 +144,13 @@ class BeekeeperService {
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
 
-      if (response.statusCode != 201) {
-        throw Exception("No data found");
-      }
-      if (response.statusCode == 400) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Error: ${e.toString()}');
     }
   }
 
-  Future<void> deleteBeehiveFromFarm(
+  Future<Header> deleteBeehiveFromFarm(
       String token, String farmId, String beehiveId) async {
     try {
       var map = <String, dynamic>{};
@@ -180,19 +163,14 @@ class BeekeeperService {
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
 
-      if (response.statusCode != 200) {
-        throw Exception("Problem here");
-      }
-      if (response.statusCode == 400) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Error: ${e.toString()}');
     }
   }
 
-  Future<void> associateFarmToSubowner(
-      String token,  String subownerId,String farmId) async {
+  Future<Header> associateFarmToSubowner(
+      String token, String subownerId, String farmId) async {
     try {
       var map = <String, dynamic>{};
       map['farmId'] = farmId;
@@ -204,20 +182,13 @@ class BeekeeperService {
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
 
-      if (response.statusCode != 200) {
-        print("error != 200");
-        throw Exception("No data found");
-      }
-      if (response.statusCode == 400) {
-        print("error == 400");
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Error: ${e.toString()}');
     }
   }
 
-  Future<void> deleteFarmFromSubowner(
+  Future<Header> deleteFarmFromSubowner(
       String token, String subownerId, String farmId) async {
     try {
       var map = <String, dynamic>{};
@@ -230,15 +201,9 @@ class BeekeeperService {
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
 
-      if (response.statusCode != 200) {
-        throw Exception("Problem here");
-      }
-      if (response.statusCode == 400) {
-        throw Exception("No data found");
-      }
+      return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
       throw Exception('Error: ${e.toString()}');
     }
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/cubits/profile/profile_cubit.dart';
+import 'package:pherobee/screens/fake/home_screen.dart';
 
 class FarmsScreen extends StatelessWidget {
   const FarmsScreen({super.key});
@@ -65,7 +66,7 @@ class FarmsScreen extends StatelessWidget {
                     )
                   : const Text("No Subowners here");
             } else if (state is ProfileError) {
-              return Text(state.error);
+              return ErrorToLoad(error: state.error);
             } else {
               print(state);
               return const Text("Farms Not available");

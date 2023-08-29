@@ -19,7 +19,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      ApiResponse<Beekeeper> beekeeper = await _beekeeperRepository.loadProfile(token);
+      ApiResponse<Beekeeper> beekeeper =
+          await _beekeeperRepository.loadProfile(token);
       // _saveProfile(beekeeper);
       emit(ProfileLoaded(beekeeper.body!));
     } catch (e) {
@@ -31,9 +32,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      await _beekeeperRepository.deleteSubowner(token, subownerId);
+      Header header =
+          await _beekeeperRepository.deleteSubowner(token, subownerId);
       await loadProfile();
-      // emit(ProfileLoaded(beekeeper));
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
@@ -43,8 +47,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      await _beekeeperRepository.createSubowner(token, email, password);
+      Header header =
+          await _beekeeperRepository.createSubowner(token, email, password);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -56,9 +64,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      await _beekeeperRepository.editSubowner(
+      Header header = await _beekeeperRepository.editSubowner(
           token, subownerId, email, password);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -69,8 +80,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      await _beekeeperRepository.deleteFarm(token, farmId);
+      Header header = await _beekeeperRepository.deleteFarm(token, farmId);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -81,8 +95,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-      await _beekeeperRepository.editFarm(token, farmId, name, location);
+      Header header =
+          await _beekeeperRepository.editFarm(token, farmId, name, location);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
@@ -93,8 +111,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       String token = await _loadToken();
 
-      await _beekeeperRepository.createFarm(token, name, location);
+      Header header =
+          await _beekeeperRepository.createFarm(token, name, location);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -105,9 +127,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-// TODO: handle if the beehive is already associated to the farm
-      await _beekeeperRepository.associateBeehiveToFarm(token, farmId, beehiveId);
+      Header header = await _beekeeperRepository.associateBeehiveToFarm(
+          token, farmId, beehiveId);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -119,23 +144,28 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       String token = await _loadToken();
 
-      await _beekeeperRepository.deleteBeehiveFromFarm(token, farmId, beehiveId);
+      Header header = await _beekeeperRepository.deleteBeehiveFromFarm(
+          token, farmId, beehiveId);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
   }
 
-
-
-  Future<void> associateFarmToSubowner(String subownerId,String farmId) async {
+  Future<void> associateFarmToSubowner(String subownerId, String farmId) async {
     emit(ProfileLoading());
     try {
       String token = await _loadToken();
-// TODO: handle if the beehive is already associated to the farm
-      await _beekeeperRepository.associateFarmToSubowner(token,subownerId, farmId);
+      Header header = await _beekeeperRepository.associateFarmToSubowner(
+          token, subownerId, farmId);
       await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
       // emit(ProfileLoaded(beekeeper));
     } catch (e) {
       emit(ProfileError(e.toString()));
@@ -147,13 +177,17 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       String token = await _loadToken();
 
-      await _beekeeperRepository.deleteFarmFromSubowner(token,subownerId,farmId);
+      Header header = await _beekeeperRepository.deleteFarmFromSubowner(
+          token, subownerId, farmId);
       await loadProfile();
-      // emit(ProfileLoaded(beekeeper));
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
   }
+
 
   Future<String> _loadToken() async {
     final prefs = await SharedPreferences.getInstance();

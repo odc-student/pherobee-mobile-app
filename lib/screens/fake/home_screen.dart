@@ -83,13 +83,38 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             );
           } else if(state is ProfileError){
-            print(state.error);
-            return const Text("Profile Error");
+
+            return ErrorToLoad(error: state.error);
           }else{
-            return const Text("SOmething else happened");
+            return const Text("Something else happened");
           }
         },
       ),
     ));
+  }
+}
+
+class ErrorToLoad extends StatelessWidget {
+  final String error;
+  const ErrorToLoad({
+    super.key, required this.error,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Column(
+        children: [
+          Text(error),
+          InkWell(
+            onTap: (){
+              context.read<ProfileCubit>().loadProfile();
+            },
+            child: const Text("Back"),
+          )
+        ],
+      ),
+    );
   }
 }
