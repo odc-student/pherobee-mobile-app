@@ -16,13 +16,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String data;
+  late String role;
+
 
   @override
   void initState() {
     super.initState();
+    role = loadRole();
     context.read<ProfileCubit>().loadProfile();
-    // _loadData();
+
   }
 
   @override
@@ -91,6 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
     ));
+  }
+
+  String loadRole() {
+
   }
 }
 

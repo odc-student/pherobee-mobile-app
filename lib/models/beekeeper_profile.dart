@@ -3,7 +3,7 @@ import 'package:pherobee/models/subowner.dart';
 import 'beehive.dart';
 import 'farm.dart';
 
-class Beekeeper {
+class BeekeeperProfile {
   String? sId;
   String? email;
   String? firstName;
@@ -14,7 +14,7 @@ class Beekeeper {
   List<Farm>? farms;
   List<Subowner>? subowners;
 
-  Beekeeper({
+  BeekeeperProfile({
     this.sId,
     this.email,
     this.firstName,
@@ -26,7 +26,7 @@ class Beekeeper {
     this.subowners,
   });
 
-  Beekeeper.fromJson(Map<String, dynamic> json) {
+  BeekeeperProfile.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     email = json['email'];
     firstName = json['firstName'];

@@ -58,7 +58,7 @@ class FarmsScreen extends StatelessWidget {
                               context
                                   .read<ProfileCubit>()
                                   .createFarm('NAME', "LOCAATION");
-                              print(state.beekeeper.farms?.length!.toString());
+                              // print(state.beekeeper.farms?.length!.toString());
                             },
                             child: const Text("Create")),
                         Text(state.beekeeper.farms!.length.toString()),

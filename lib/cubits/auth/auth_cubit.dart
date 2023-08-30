@@ -6,7 +6,7 @@ import 'package:pherobee/models/api_response.dart';
 import 'package:pherobee/repositories/beekeeper_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/beekeeper.dart';
+import '../../models/beekeeper_profile.dart';
 import '../../models/login_response.dart';
 import '../../repositories/authentication_repository.dart';
 
@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       ApiResponse<LoginResponse> result = await _authRepository.signIn(email, password);
       if (result.header!.success!) {
-        _saveToken( result.body!.token!);
+        _saveToken( result.body!.token!,result.body!.role!);
         emit(AuthSuccess(loginResponse: result.body!));
       } else {
         emit(AuthFailed(error: "Couldn't Authenticate, try again"));
@@ -32,10 +32,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void _saveToken(String token) async {
+  void _saveToken(String token,String role) async {
     final prefs = await SharedPreferences.getInstance();
 
     prefs.setString('token', token);
+    prefs.setString('role', role);
     // prefs.setString('id', id);
   }
 
@@ -52,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
   //   emit(LoggedOut());
   // }
 
-  Future<void> _saveProfile(Beekeeper beekeeper) async {
+  Future<void> _saveProfile(BeekeeperProfile beekeeper) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("profile", json.encode(beekeeper));
   }

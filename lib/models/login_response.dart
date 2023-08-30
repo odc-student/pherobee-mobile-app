@@ -1,30 +1,22 @@
-import 'package:pherobee/models/beekeeper.dart';
+import 'package:pherobee/models/beekeeper_profile.dart';
 
 class LoginResponse {
-  bool? success;
+  String? role;
   String? token;
+
   // Beekeeper? beekeeper;
 
-  LoginResponse({this.success, this.token});
+  LoginResponse({this.role, this.token});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
+    role = json['role'];
     token = json['token'];
-
-    // print(json['beekeeper']);
-    //
-    // beekeeper = json['beekeeper'] != null
-    //     ? Beekeeper.fromJson(json['beekeeper'])
-    //     : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
+    data['role'] = role;
     data['token'] = token;
-    // if (beekeeper != null) {
-    //   data['beekeeper'] = beekeeper!.toJson();
-    // }
     return data;
   }
 }

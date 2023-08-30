@@ -17,7 +17,7 @@ class ProfileLoading extends ProfileState {
 
 
 class ProfileLoaded extends ProfileState {
-  final Beekeeper beekeeper;
+  final BeekeeperProfile beekeeper;
 
   const ProfileLoaded(this.beekeeper);
 
