@@ -17,7 +17,7 @@ class SubownersScreen extends StatelessWidget {
             if (state is ProfileLoading) {
               return const CircularProgressIndicator();
             }
-            if (state is ProfileLoaded) {
+            if (state is BeekeeperProfileLoaded) {
               return state.beekeeper.subowners != null &&
                       state.beekeeper.subowners!.isNotEmpty
                   ? Column(

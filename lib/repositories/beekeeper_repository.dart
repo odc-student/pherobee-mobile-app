@@ -1,13 +1,14 @@
 import 'package:pherobee/models/api_response.dart';
 import 'package:pherobee/models/beekeeper_profile.dart';
+import 'package:pherobee/models/subowner_profile.dart';
 import '../data/beekeeper_service.dart';
 
 class BeekeeperRepository {
   final BeekeeperService _beekeeperService;
 
   BeekeeperRepository(this._beekeeperService);
-  Future<ApiResponse<BeekeeperProfile>> loadProfile(String token) async {
-    return await _beekeeperService.loadProfile(token);
+  Future<ApiResponse<BeekeeperProfile>> loadBeekeeperProfile(String token) async {
+    return await _beekeeperService.loadBeekeeperProfile(token);
   }
 
   Future<Header> deleteSubowner(String token,String subownerId) async {

@@ -5,7 +5,7 @@ import "package:pherobee/models/api_response.dart";
 import "package:pherobee/models/beekeeper_profile.dart";
 
 class BeekeeperService {
-  Future<ApiResponse<BeekeeperProfile>> loadProfile(String token) async {
+  Future<ApiResponse<BeekeeperProfile>> loadBeekeeperProfile(String token) async {
     try {
       final response = await http.get(
         Uri.parse(
@@ -25,6 +25,8 @@ class BeekeeperService {
       throw Exception('Failed to loadProfile');
     }
   }
+
+
 
   Future<Header> deleteSubowner(String token, String subownerId) async {
     try {

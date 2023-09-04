@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> checkTokenAndNavigate() async {
     // Check if token exists
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.clear();
+    prefs.clear();
     String token = prefs.getString('token') ?? '';
     if (token.isNotEmpty) {
       // Navigate to the other screen if token exists
@@ -44,6 +44,12 @@ class _SignInScreenState extends State<SignInScreen> {
             TextButton(
               onPressed: () {
                 context.read<AuthCubit>().signIn("user@user.user", "1234");
+              },
+              // tooltip: 'Increment',
+              child: const Icon(Icons.login),
+            ),TextButton(
+              onPressed: () {
+                context.read<AuthCubit>().signIn("Tunis1", "louay");
               },
               // tooltip: 'Increment',
               child: const Icon(Icons.login),

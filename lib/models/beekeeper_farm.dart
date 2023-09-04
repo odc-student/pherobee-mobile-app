@@ -1,23 +1,21 @@
 import 'beehive.dart';
 
-class Farm {
+class BeekeeperFarm {
   String? sId;
   String? location;
   List<String>? beehivesId;
   String? name;
 
-  Farm({this.sId, this.location, this.beehivesId, this.name});
+  BeekeeperFarm({this.sId, this.location, this.beehivesId, this.name});
 
-  Farm.fromJson(Map<String, dynamic> json) {
+  BeekeeperFarm.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     location = json['location'];
-
     if (json['beehives'] != null) {
       beehivesId = <String>[];
 
       json['beehives'].forEach((v) {
         beehivesId!.add(v);
-
       });
     }
     name = json['name'];

@@ -16,7 +16,7 @@ class FarmsScreen extends StatelessWidget {
             if (state is ProfileLoading) {
               return const CircularProgressIndicator();
             }
-            if (state is ProfileLoaded) {
+            if (state is BeekeeperProfileLoaded) {
               return state.beekeeper.farms != null &&
                       state.beekeeper.farms!.isNotEmpty
                   ? Column(

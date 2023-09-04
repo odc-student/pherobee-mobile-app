@@ -1,16 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/data/authentication_service.dart';
 import 'package:pherobee/data/beekeeper_service.dart';
+import 'package:pherobee/data/subowner_service.dart';
 import 'package:pherobee/repositories/authentication_repository.dart';
 import 'package:pherobee/repositories/beekeeper_repository.dart';
+import 'package:pherobee/repositories/subowner_repository.dart';
 import 'package:pherobee/screens/fake/home_screen.dart';
 import 'package:pherobee/screens/fake/signin_screen.dart';
-
 import 'cubits/auth/auth_cubit.dart';
 import 'cubits/profile/profile_cubit.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+
+    options: DefaultFirebaseOptions.currentPlatform,
+
+  );
+  //
+  //   await FirebaseMessaging.instance.subscribeToTopic("topic");
   runApp(const MyApp());
 }
 
@@ -32,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           AuthenticationRepository(AuthenticationService()),
           BeekeeperRepository(BeekeeperService())),
           ),BlocProvider(create: (context) => ProfileCubit(
-    BeekeeperRepository(BeekeeperService())))
+    BeekeeperRepository(BeekeeperService()),SubownerRepository(SubownerService())))
 
 
     ],

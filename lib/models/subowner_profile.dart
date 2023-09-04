@@ -1,11 +1,15 @@
-import 'farm.dart';
+import 'package:pherobee/models/subowner_farm.dart';
+
+import 'beekeeper_farm.dart';
+
 
 class SubownerProfile {
   String? sId;
   String? email;
   String? role;
-  List<Farm>? farmAccess;
+  List<SubownerFarm>? farmAccess;
   int? iV;
+
 
   SubownerProfile({this.sId, this.email, this.role, this.farmAccess, this.iV});
 
@@ -14,9 +18,9 @@ class SubownerProfile {
     email = json['email'];
     role = json['role'];
     if (json['farmAccess'] != null) {
-      farmAccess = <Farm>[];
+      farmAccess = <SubownerFarm>[];
       json['farmAccess'].forEach((v) {
-        farmAccess!.add(Farm.fromJson(v));
+        farmAccess!.add(SubownerFarm.fromJson(v));
       });
     }
     iV = json['__v'];

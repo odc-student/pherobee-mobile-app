@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/cubits/profile/profile_cubit.dart';
 import 'package:pherobee/screens/fake/farms_screen.dart';
-import 'package:pherobee/screens/fake/signin_screen.dart';
 import 'package:pherobee/screens/fake/subowners_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../cubits/auth/auth_cubit.dart';
@@ -22,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    role = loadRole();
+    loadRole();
     context.read<ProfileCubit>().loadProfile();
 
   }
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Text("Profile not Loaded");
           } else if (state is ProfileLoading) {
             return const CircularProgressIndicator();
-          } else if (state is ProfileLoaded) {
+          } else if (state is BeekeeperProfileLoaded) {
             return Column(
               children: [
                 if (state.beekeeper.lastName != null)
@@ -87,6 +86,27 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if(state is ProfileError){
 
             return ErrorToLoad(error: state.error);
+          }else if(state is SubownerProfileLoaded){
+
+
+            return Column(
+              children: [
+                Text(state.subownerProfile.email!),TextButton(
+                    onPressed: () {
+                      context.read<AuthCubit>().logout();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyHomePage(
+                            title: 'Hi',
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text("Log OUT"))
+
+              ],
+            );
           }else{
             return const Text("Something else happened");
           }
@@ -95,9 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
-  String loadRole() {
+  void loadRole() async {
+    final prefs = await SharedPreferences.getInstance();
 
+    String _role = prefs.getString("role")!;
+     role = _role;
   }
+
 }
 
 class ErrorToLoad extends StatelessWidget {

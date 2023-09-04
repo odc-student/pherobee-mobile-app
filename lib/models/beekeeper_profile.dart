@@ -1,7 +1,7 @@
 import 'package:pherobee/models/subowner.dart';
 
 import 'beehive.dart';
-import 'farm.dart';
+import 'beekeeper_farm.dart';
 
 class BeekeeperProfile {
   String? sId;
@@ -11,7 +11,7 @@ class BeekeeperProfile {
   String? role;
   List<Beehive>? beehives;
   String? forgotPasswordToken;
-  List<Farm>? farms;
+  List<BeekeeperFarm>? farms;
   List<Subowner>? subowners;
 
   BeekeeperProfile({
@@ -43,9 +43,9 @@ class BeekeeperProfile {
     forgotPasswordToken = json['forgotPasswordToken'];
 
     if (json['farms'] != null) {
-      farms = <Farm>[];
+      farms = <BeekeeperFarm>[];
       json['farms'].forEach((v) {
-        farms!.add(Farm.fromJson(v));
+        farms!.add(BeekeeperFarm.fromJson(v));
 
       });
     }
