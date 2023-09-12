@@ -7,8 +7,9 @@ import 'package:pherobee/data/subowner_service.dart';
 import 'package:pherobee/repositories/authentication_repository.dart';
 import 'package:pherobee/repositories/beekeeper_repository.dart';
 import 'package:pherobee/repositories/subowner_repository.dart';
-import 'package:pherobee/screens/fake/home_screen.dart';
+import 'package:pherobee/screens/farms_screen/farms_screen.dart';
 import 'package:pherobee/screens/fake/signin_screen.dart';
+import 'package:pherobee/screens/home_screen/home_screen.dart';
 import 'cubits/auth/auth_cubit.dart';
 import 'cubits/profile/profile_cubit.dart';
 import 'firebase_options.dart';
@@ -20,8 +21,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
 
   );
-  //
-  //   await FirebaseMessaging.instance.subscribeToTopic("topic");
   runApp(const MyApp());
 }
 
@@ -43,20 +42,18 @@ class _MyAppState extends State<MyApp> {
           AuthenticationRepository(AuthenticationService()),
           BeekeeperRepository(BeekeeperService())),
           ),BlocProvider(create: (context) => ProfileCubit(
-    BeekeeperRepository(BeekeeperService()),SubownerRepository(SubownerService())))
-
-
-    ],
+    BeekeeperRepository(BeekeeperService()),SubownerRepository(SubownerService())))],
       child: const MaterialApp(
-          title: "First Page", home: MyHomePage(title: "First Page")),
+          debugShowCheckedModeBanner: false,
+          home: FarmsScreen()),
+    // child: ,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -74,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         } else if (state is AuthFailed) {
           return const SignInScreen();
         } else if (state is AuthSuccess) {
-          return const HomeScreen();
+          return const HomeScreen( );
         } else {
           return const Text("something else");
         }

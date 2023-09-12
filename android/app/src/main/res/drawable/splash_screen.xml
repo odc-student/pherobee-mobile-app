@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item >
+        <color android:color="#EDEDED"/>
+    </item>
+    <item>
+        <!-- Add Bitmap with gravity as center to align the content in center -->
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo" />
+    </item>
+
+    <item>  <!-- Add Background color as per your necessity-->
+        <bitmap
+            android:gravity="top|fill_horizontal"
+            android:src="@drawable/ic_splash_screen" />
+    </item>
+</layer-list>

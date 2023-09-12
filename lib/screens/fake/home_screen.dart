@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/cubits/profile/profile_cubit.dart';
@@ -6,6 +9,7 @@ import 'package:pherobee/screens/fake/subowners_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../main.dart';
+import '../../utils/load_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +21,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late String role;
 
+  subscribe(String topic) async {
+    LocalData localData = LocalData();
+    localData.beehiveSerialNumbers.add(topic);
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+    print("Subscribe done");
+  }
 
   @override
   void initState() {
@@ -38,7 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (state is ProfileLoading) {
             return const CircularProgressIndicator();
           } else if (state is BeekeeperProfileLoaded) {
-            return Column(
+              final List<String> beehivesSerialNumbers = state.beekeeper!.beehives!.map((e) => e.serialNumber!).toList();
+
+              // beehivesSerialNumbers.map((e) => print(e));
+              for (var i = 0; i < beehivesSerialNumbers.length; i++) {
+                subscribe(beehivesSerialNumbers[i]);
+              }
+              return Column(
               children: [
                 if (state.beekeeper.lastName != null)
                   Text(state.beekeeper.lastName!),
@@ -75,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MyHomePage(
-                            title: 'Hi',
+
                           ),
                         ),
                       );
@@ -98,8 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MyHomePage(
-                            title: 'Hi',
-                          ),
+                            ),
                         ),
                       );
                     },

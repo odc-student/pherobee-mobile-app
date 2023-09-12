@@ -12,11 +12,9 @@ class AuthenticationService {
       var map = <String, dynamic>{};
       map['email'] = email;
       map['password'] = password;
-      print(email);
-      print(password);
       final response = await http.post(
           Uri.parse(
-            "http://10.0.2.2:5000/v1/api/auth/login",
+            "http://192.168.1.113:5000/v1/api/auth/login",
           ),
           body: map
       );

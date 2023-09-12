@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:pherobee/utils/load_data.dart';
 import 'package:pherobee/models/api_response.dart';
@@ -46,6 +47,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
+    LocalData localData= LocalData();
+    localData.beehiveSerialNumbers.map((e) async => await FirebaseMessaging.instance.unsubscribeFromTopic(e));
+
     prefs.remove('token');
     prefs.remove('id');
     emit(LoggedOut());
