@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const orangeColor = Color(0xFFF38800);
   static const primaryColor = Color(0xFFFEB501);
   static const secondaryColor = Color(0xFFFEC400);
   static const thirdColor = Color(0xFFFFE8B2);
   static const cardColor2 = Color(0xFFFFCD52);
-  static const orangeColor = Color(0xFFFFF5DD);
+  static const weakOrangeColor = Color(0xFFFFF5DD);
   static const navbarColor = Color(0xFFFFF0CB);
   static const cardColor3 = Color(0xFFFFF7E0);
   static const cardColor4 = Color(0xFFF5F1E4);

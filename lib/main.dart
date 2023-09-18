@@ -7,9 +7,11 @@ import 'package:pherobee/data/subowner_service.dart';
 import 'package:pherobee/repositories/authentication_repository.dart';
 import 'package:pherobee/repositories/beekeeper_repository.dart';
 import 'package:pherobee/repositories/subowner_repository.dart';
-import 'package:pherobee/screens/farms_screen/farms_screen.dart';
+import 'package:pherobee/screens/beehives/beehive_screen.dart';
 import 'package:pherobee/screens/fake/signin_screen.dart';
-import 'package:pherobee/screens/home_screen/home_screen.dart';
+import 'package:pherobee/screens/home/home_screen.dart';
+import 'package:pherobee/screens/notifications/notifications_screen.dart';
+import 'package:pherobee/screens/settings/settings_screen.dart';
 import 'cubits/auth/auth_cubit.dart';
 import 'cubits/profile/profile_cubit.dart';
 import 'firebase_options.dart';
@@ -45,7 +47,7 @@ class _MyAppState extends State<MyApp> {
     BeekeeperRepository(BeekeeperService()),SubownerRepository(SubownerService())))],
       child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: FarmsScreen()),
+          home: SettingsScreen()),
     // child: ,
     );
   }

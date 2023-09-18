@@ -21,11 +21,11 @@ class BeehiveWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(context.medium, context.small, context.medium, context.small),
+      margin: EdgeInsets.all( context.small),
       padding: EdgeInsets.all(context.medium),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: AppColors.orangeColor
+        color: AppColors.weakOrangeColor
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

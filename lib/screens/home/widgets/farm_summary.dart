@@ -23,12 +23,16 @@ class FarmSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(context.small),
-      margin: EdgeInsets.fromLTRB(0, context.small/2, 0, context.small/2),
-      width: context.width * 0.8,
+      margin: EdgeInsets.fromLTRB(0, context.small / 2, 0, context.small / 2),
+      width: context.width * 0.9,
       height: context.height * 0.13,
-      decoration: const BoxDecoration(
-          color: AppColors.orangeColor,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      decoration: BoxDecoration(
+          border: Border.all(
+              color: AppColors.primaryColor,
+              width: 3,
+              style: BorderStyle.solid,),
+          // color: AppColors.orangeColor,
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

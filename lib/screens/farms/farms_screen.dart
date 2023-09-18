@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pherobee/config/config.dart';
-import 'package:pherobee/screens/farms_screen/widgets/app_bar_widget.dart';
+import 'package:pherobee/screens/shared_widgets/app_bar_widget.dart';
 import 'package:pherobee/screens/shared_widgets/beehive_widget.dart';
 import 'package:pherobee/screens/shared_widgets/title_widget.dart';
 

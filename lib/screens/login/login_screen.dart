@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               ButtonWidget(onTap: (){
-                //todo: login logic
+                //todo: login logic 
               }, text: 'Log In',),
               SvgPicture.asset("assets/icons/logo.svg")
             ],
