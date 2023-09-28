@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pherobee/config/config.dart';
 
-import '../../../config/colors.dart';
+import '../../config/colors.dart';
 
 class InputFieldWidget extends StatefulWidget {
   const InputFieldWidget({

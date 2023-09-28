@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:http/http.dart" as http;
 import "package:pherobee/models/api_response.dart";
 import "package:pherobee/models/beekeeper_profile.dart";
@@ -9,7 +10,7 @@ class BeekeeperService {
     try {
       final response = await http.get(
         Uri.parse(
-          "http://192.168.1.113:5000/v1/api/beekeeper",
+          "${dotenv.env['API_ENDPOINT']}/v1/api/beekeeper",
         ),
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
@@ -34,7 +35,7 @@ class BeekeeperService {
       map['subownerId'] = subownerId;
       final response = await http.delete(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/delete/subowner",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/delete/subowner",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -52,7 +53,7 @@ class BeekeeperService {
       map['password'] = password;
       final response = await http.post(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/create/subowner",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/create/subowner",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -71,7 +72,7 @@ class BeekeeperService {
       map['subownerId'] = subownerId;
       final response = await http.patch(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/update/subowner",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/update/subowner",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -87,7 +88,7 @@ class BeekeeperService {
       map['farmId'] = farmId;
       final response = await http.delete(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/delete/farm",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/delete/farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -106,7 +107,7 @@ class BeekeeperService {
       map['location'] = location;
       final response = await http.patch(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/update/farm",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/update/farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -123,7 +124,7 @@ class BeekeeperService {
       map['location'] = location;
       final response = await http.post(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/create/farm",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/create/farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -141,7 +142,7 @@ class BeekeeperService {
       map['beehiveId'] = beehiveId;
       final response = await http.post(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/associate/beehive_to_farm",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/associate/beehive_to_farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -160,7 +161,7 @@ class BeekeeperService {
       map['beehiveId'] = beehiveId;
       final response = await http.delete(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/delete/beehive_from_farm",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/delete/beehive_from_farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -179,7 +180,7 @@ class BeekeeperService {
       map['subownerId'] = subownerId;
       final response = await http.post(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/associate/farm_to_subowner",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/associate/farm_to_subowner",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
@@ -198,7 +199,7 @@ class BeekeeperService {
       map['subownerId'] = subownerId;
       final response = await http.delete(
           Uri.parse(
-            "http://192.168.1.113:5000/v1/api/beekeepers/delete/farm_from_subowner",
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/delete/farm_from_subowner",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);

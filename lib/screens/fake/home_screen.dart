@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+        resizeToAvoidBottomInset: false,
         body: Padding(
       padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
       child: BlocBuilder<ProfileCubit, ProfileState>(
@@ -103,8 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return ErrorToLoad(error: state.error);
           }else if(state is SubownerProfileLoaded){
-
-
             return Column(
               children: [
                 Text(state.subownerProfile.email!),TextButton(

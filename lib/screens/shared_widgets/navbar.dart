@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pherobee/config/config.dart';
 import 'package:pherobee/screens/shared_widgets/nav_item.dart';
+import 'package:pherobee/screens/subowners/subowners_screen.dart';
 
 import '../../config/colors.dart';
 
 class Navbar extends StatelessWidget {
   const Navbar({
-    super.key,
+    super.key, required this.onTap,
   });
-
+  final Function(int index) onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,23 +31,30 @@ class Navbar extends StatelessWidget {
                   NavItemWidget(
                       title: "Beekeeper",
                       path: "assets/images/beekeeper.png",
-                      onTap: () {}),
+                      onTap: () {
+                        onTap(0);
+                      }),
                   NavItemWidget(
                       title: "Beehives",
                       path: "assets/images/beehives.png",
-                      onTap: () {}),
+                      onTap: () {onTap(1);}),
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(context.small),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  color: AppColors.cardColor2),
-              child: SvgPicture.asset(
-                "assets/icons/logo_simple.svg",
-                width: context.width * 0.1125,
-                height: context.width * 0.1125,
+            InkWell(
+              onTap: (){
+                onTap(2);
+              },
+              child: Container(
+                padding: EdgeInsets.all(context.small),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: AppColors.cardColor2),
+                child: SvgPicture.asset(
+                  "assets/icons/logo_simple.svg",
+                  width: context.width * 0.1125,
+                  height: context.width * 0.1125,
+                ),
               ),
             ),
             Container(
@@ -58,11 +66,14 @@ class Navbar extends StatelessWidget {
                   NavItemWidget(
                       title: "Farms",
                       path: "assets/images/farms.png",
-                      onTap: () {}),
+                      onTap: () {onTap(4);}),
                   NavItemWidget(
                       title: "Subowners",
                       path: "assets/images/subowner.png",
-                      onTap: () {}),
+                      onTap: () {
+                        onTap(5);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SubownersScreen(),));
+                      }),
                 ],
               ),
             ),

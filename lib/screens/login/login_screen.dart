@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pherobee/config/config.dart';
+import 'package:pherobee/cubits/auth/auth_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/colors.dart';
+import '../../utils/valid_mail.dart';
+import '../home/home_screen.dart';
 import '../shared_widgets/button_widget.dart';
 import '../shared_widgets/title_widget.dart';
-import 'widgets/input_field_widget.dart';
+import '../shared_widgets/input_field_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,9 +24,35 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
   @override
+  void initState() {
+    checkTokenAndNavigate();
+    super.initState();
+  }
+
+  Future<void> checkTokenAndNavigate() async {
+    // Check if token exists
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    String token = prefs.getString('token') ?? '';
+    if (token.isNotEmpty) {
+      // Navigate to the other screen if token exists
+      navigateToHome();
+    }
+  }
+
+  void navigateToHome() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.primaryColor,
       body: SafeArea(
         child: Center(
@@ -58,9 +89,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              ButtonWidget(onTap: (){
-                //todo: login logic 
-              }, text: 'Log In',),
+              ButtonWidget(
+                onTap: () {
+                  print(isEmailValid(mailOrPhoneController.text));
+                  print(passwordController.text);
+
+                  context
+                      .read<AuthCubit>()
+                      .signIn(mailOrPhoneController.text,passwordController.text);
+                  //todo: login logic
+                },
+                text: 'Log In',
+              ),
               SvgPicture.asset("assets/icons/logo.svg")
             ],
           ),

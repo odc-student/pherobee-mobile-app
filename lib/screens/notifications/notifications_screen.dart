@@ -12,6 +12,8 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(context.height * 0.1),
           child: const SafeArea(
@@ -21,7 +23,7 @@ class NotificationsScreen extends StatelessWidget {
             icon: Icons.notifications,
             // location: 'Location',
           ))),
-      bottomNavigationBar: const Navbar(),
+      // bottomNavigationBar: const Navbar(),
       body: const SafeArea(
           child: SingleChildScrollView(
         child: Column(

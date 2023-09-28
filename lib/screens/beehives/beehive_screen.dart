@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pherobee/config/colors.dart';
 import 'package:pherobee/config/config.dart';
+import 'package:pherobee/utils/types.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../shared_widgets/app_bar_widget.dart';
 import '../shared_widgets/navbar.dart';
 
 class BeehiveScreen extends StatelessWidget {
-  const BeehiveScreen({super.key});
+  const BeehiveScreen({super.key, required this.chartsLog});
+
+  final ChartsLog chartsLog;
 
   @override
   Widget build(BuildContext context) {
-    List<_SalesData> data = [
-      _SalesData('Jan', 35),
-      _SalesData('Feb', 28),
-      _SalesData('Mar', 34),
-      _SalesData('Apr', 32),
-      _SalesData('May', 40)
-    ];
-    List<_SalesData> data2 = [
-      _SalesData('Jan', 25),
-      _SalesData('Feb', 18),
-      _SalesData('Mar', 4),
-      _SalesData('Apr', 22),
-      _SalesData('May', 10)
-    ];
     return Scaffold(
-      bottomNavigationBar: const Navbar(),
+
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(context.height * 0.1),
           child: const SafeArea(
@@ -59,21 +49,23 @@ class BeehiveScreen extends StatelessWidget {
                     isVisible: true, position: LegendPosition.bottom),
                 // Enable tooltip
                 // tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries<_SalesData, String>>[
+                series: <ChartSeries<ChartData, String>>[
                   AreaSeries(
                     color: AppColors.secondaryColor.withOpacity(0.4),
-                    dataSource: data,
-                    xValueMapper: (datum, index) => datum.year,
-                    yValueMapper: (datum, index) => datum.sales,
+                    dataSource: chartsLog.temperatureData,
+                    xValueMapper: (datum, index) =>
+                    "${datum.time.hour.toString().padLeft(2, '0')}:${datum.time.minute.toString().padLeft(2, '0')}:${datum.time.second.toString().padLeft(2, '0')}",
+                    yValueMapper: (datum, index) => datum.data,
                     dataLabelSettings: const DataLabelSettings(isVisible: true),
                   ),
-                  AreaSeries(
-                    color: AppColors.secondaryColor,
-                    dataSource: data2,
-                    xValueMapper: (datum, index) => datum.year,
-                    yValueMapper: (datum, index) => datum.sales,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true),
-                  ),
+                  // todo sec temp
+                  // AreaSeries(
+                  //   color: AppColors.secondaryColor,
+                  //   dataSource: data2,
+                  //   xValueMapper: (datum, index) => datum.year,
+                  //   yValueMapper: (datum, index) => datum.sales,
+                  //   dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  // ),
                 ]),
           ),
           SizedBox(
@@ -86,12 +78,13 @@ class BeehiveScreen extends StatelessWidget {
                 // Enable legend
                 // Enable tooltip
                 // tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries<_SalesData, String>>[
+                series: <ChartSeries<ChartData, String>>[
                   AreaSeries(
                     color: AppColors.secondaryColor,
-                    dataSource: data,
-                    xValueMapper: (datum, index) => datum.year,
-                    yValueMapper: (datum, index) => datum.sales,
+                    dataSource: chartsLog.humidityData,
+                    xValueMapper: (datum, index) =>
+                        "${datum.time.hour.toString().padLeft(2, '0')}:${datum.time.minute.toString().padLeft(2, '0')}:${datum.time.second.toString().padLeft(2, '0')}",
+                    yValueMapper: (datum, index) => datum.data,
                     dataLabelSettings: const DataLabelSettings(isVisible: true),
                   ),
                 ]),
@@ -108,12 +101,13 @@ class BeehiveScreen extends StatelessWidget {
                 //     isVisible: true, position: LegendPosition.bottom),
                 // Enable tooltip
                 // tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries<_SalesData, String>>[
+                series: <ChartSeries<ChartData, String>>[
                   AreaSeries(
                     color: AppColors.secondaryColor,
-                    dataSource: data2,
-                    xValueMapper: (datum, index) => datum.year,
-                    yValueMapper: (datum, index) => datum.sales,
+                    dataSource: chartsLog.weightData,
+                    xValueMapper: (datum, index) =>
+                    "${datum.time.hour.toString().padLeft(2, '0')}:${datum.time.minute.toString().padLeft(2, '0')}:${datum.time.second.toString().padLeft(2, '0')}",
+                    yValueMapper: (datum, index) => datum.data,
                     dataLabelSettings: const DataLabelSettings(isVisible: true),
                   ),
                 ]),
@@ -136,26 +130,22 @@ class BeehiveScreen extends StatelessWidget {
 
           Container(
               width: context.width * 0.5,
-              padding: EdgeInsets.fromLTRB(context.medium,context.small,context.medium,context.small),
+              padding: EdgeInsets.fromLTRB(
+                  context.medium, context.small, context.medium, context.small),
               decoration: const BoxDecoration(
                 color: AppColors.thirdColor,
-                borderRadius:BorderRadius.all( Radius.circular(10)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: Text(
                 "See all records",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: context.medium,color: AppColors.orangeColor),
+                    fontWeight: FontWeight.bold,
+                    fontSize: context.medium,
+                    color: AppColors.orangeColor),
               )),
         ]),
       ),
     );
   }
-}
-
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
 }

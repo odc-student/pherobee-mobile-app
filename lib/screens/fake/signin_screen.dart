@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> checkTokenAndNavigate() async {
     // Check if token exists
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    // prefs.clear();
     String token = prefs.getString('token') ?? '';
     if (token.isNotEmpty) {
       // Navigate to the other screen if token exists
@@ -36,6 +36,8 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
         child: Column(
@@ -43,7 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
             const Text('Click sign in '),
             TextButton(
               onPressed: () {
-                context.read<AuthCubit>().signIn("user@user.user", "1234");
+                context.read<AuthCubit>().signIn("louaybadri001@gmail.com", "1234");
               },
               // tooltip: 'Increment',
               child: const Icon(Icons.login),

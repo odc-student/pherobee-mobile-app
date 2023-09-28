@@ -9,6 +9,8 @@ class FarmsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<ProfileCubit, ProfileState>(

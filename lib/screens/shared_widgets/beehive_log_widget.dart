@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pherobee/config/colors.dart';
 import 'package:pherobee/config/config.dart';
 
-import '../../utils/log_type.dart';
+import '../../utils/types.dart';
 
 class BeehiveLogUnit extends StatelessWidget {
   const BeehiveLogUnit({
@@ -85,8 +85,12 @@ class BeehiveLogUnit extends StatelessWidget {
               )),
           SizedBox(
               width: context.width * 0.1,
-              child: Text(value,
-                  style: TextStyle(color: danger ? Colors.red : Colors.black,fontWeight: FontWeight.bold))),
+              child: SingleChildScrollView(
+
+                scrollDirection: Axis.horizontal,
+                child: Text(value,
+                    style: TextStyle(color: danger ? Colors.red : Colors.black,fontWeight: FontWeight.bold)),
+              )),
         ],
       );
     }
