@@ -12,13 +12,11 @@ class FarmSummary extends StatelessWidget {
     required this.beehivesNumber,
     required this.subownersNumber,
   });
-
   final bool farmIsInDanger;
   final String farmName;
   final String location;
   final int beehivesNumber;
   final int subownersNumber;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +27,7 @@ class FarmSummary extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border.all(
               color: AppColors.primaryColor,
-              width: 3,
+              width: 2,
               style: BorderStyle.solid,),
           // color: AppColors.orangeColor,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
@@ -72,13 +70,13 @@ class FarmSummary extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            width: context.width * .05,
-            height: context.width * .05,
-            decoration: BoxDecoration(
-                color: farmIsInDanger ? Colors.red : Colors.green,
-                borderRadius: BorderRadius.circular(10)),
-          )
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.edit),
+              Icon(Icons.delete_sharp),
+            ],
+          ),
         ],
       ),
     );

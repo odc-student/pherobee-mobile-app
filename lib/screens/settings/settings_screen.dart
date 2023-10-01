@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:pherobee/config/colors.dart';
 import 'package:pherobee/config/config.dart';
-import 'package:pherobee/screens/shared_widgets/navbar.dart';
+import 'package:pherobee/screens/settings/widgets/app_settings_unit.dart';
 import 'package:pherobee/screens/shared_widgets/title_widget.dart';
-
 import '../shared_widgets/app_bar_widget.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late bool _isOpened = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(context.height * 0.1),
-          child: const SafeArea(
-              child: AppBarWidget(
+        preferredSize: Size.fromHeight(context.height * 0.1),
+        child: const SafeArea(
+          child: AppBarWidget(
             title: "Settings",
             icon: Icons.settings,
             // location: 'Location',
-          ))),
+          ),
+        ),
+      ),
       body: SafeArea(
           child: Container(
         margin: EdgeInsets.fromLTRB(context.medium, 0, context.medium, 0),
@@ -76,7 +83,7 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(0,0,context.medium,0),
+                    margin: EdgeInsets.fromLTRB(0, 0, context.medium, 0),
                     child: Column(
                       children: [
                         Container(
@@ -86,7 +93,6 @@ class SettingsScreen extends StatelessWidget {
                                     fontSize: context.medium * 0.9,
                                     fontWeight: FontWeight.bold))),
                         Container(
-
                             padding: EdgeInsets.fromLTRB(context.high,
                                 context.medium, context.high, context.medium),
                             decoration: const BoxDecoration(
@@ -101,8 +107,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-
-                    margin: EdgeInsets.fromLTRB(context.medium,0,0,0),
+                    margin: EdgeInsets.fromLTRB(context.medium, 0, 0, 0),
                     child: Column(
                       children: [
                         Container(
@@ -115,7 +120,8 @@ class SettingsScreen extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(context.high,
                               context.medium, context.high, context.medium),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: AppColors.thirdColor),
                           child: Text("My farms",
                               style: TextStyle(
@@ -178,53 +184,81 @@ class SettingsScreen extends StatelessWidget {
               const AppSettingUnit(
                 icon: Icons.logout,
                 title: 'Log Out',
+              ),
+              Container(
+                decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.primaryColor,strokeAlign: BorderSide.strokeAlignCenter,style: BorderStyle.solid)),
+                child: ClipRRect(
+                  borderRadius:BorderRadius.circular(30)
+                  ,child: ExpansionPanelList(
+                    dividerColor: AppColors.primaryColor,
+                    // animationDuration: const Duration(milliseconds: 200),
+                    // expandIconColor: AppColors.whiteColor,
+                    elevation: 1, // Add elevation to create a shadow effect
+                    // expandedHeaderPadding: EdgeInsets.all(context.medium),
+                    expansionCallback: (i, isOpened) {
+                      setState(() {
+                        _isOpened = !isOpened;
+                      });
+                    },
+                    children: [
+                      ExpansionPanel(
+                          // backgroundColor: AppColors.secondaryColor,
+                          //   canTapOnHeader: false,
+                          body: Container(
+                              margin: EdgeInsets.all(context.medium),
+                              width: context.width * 0.8,
+                              height: context.height * 0.2,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      color: Colors.green,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.red,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.green,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.red,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.green,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.red,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.green,
+                                      width: context.width * .3,
+                                    ),
+                                    Container(
+                                      color: Colors.red,
+                                      width: context.width * .3,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          headerBuilder: (BuildContext context, bool isExpanded) {
+                            return const Text("Done");
+                          },
+                          isExpanded: _isOpened),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
         ),
       )),
-    );
-  }
-}
-
-class AppSettingUnit extends StatelessWidget {
-  const AppSettingUnit({
-    super.key,
-    required this.icon,
-    required this.title,
-    this.onChange,
-  });
-
-  final IconData icon;
-  final String title;
-  final Function(bool)? onChange;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: context.height * 0.075,
-      margin: EdgeInsets.fromLTRB(0,context.high / 3,0,context.high / 2),
-      width: context.width * 0.7,
-      decoration: const BoxDecoration(
-          color: AppColors.thirdColor,
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-
-              width: context.width*0.2,
-              child: Icon(icon)),
-          SizedBox(
-            width: onChange != null?context.width*0.3:context.width*0.5,
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontSize: context.medium * 0.9, fontWeight: FontWeight.bold),
-            ),
-          ),
-          if (onChange != null) Switch(value: true, onChanged: onChange)
-        ],
-      ),
     );
   }
 }

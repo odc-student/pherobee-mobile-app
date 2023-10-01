@@ -5,12 +5,13 @@ class BeekeeperFarm {
   String? location;
   List<String>? beehivesId;
   String? name;
-
+  DateTime? createdDate;
   BeekeeperFarm({this.sId, this.location, this.beehivesId, this.name});
 
   BeekeeperFarm.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     location = json['location'];
+    createdDate= DateTime.parse(json['createdDate']);
     if (json['beehives'] != null) {
       beehivesId = <String>[];
 
@@ -28,6 +29,8 @@ class BeekeeperFarm {
     if (beehivesId != null) {
       data['beehives'] = beehivesId!.map((v) => v).toList();
     }
+
+    data['createdDate']= createdDate;
     data['name'] = name;
     return data;
   }

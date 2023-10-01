@@ -55,7 +55,6 @@ class _FarmsScreenState extends State<FarmsScreen> {
                     padding: EdgeInsets.all(context.medium),
                     child: Column(
                       children: [
-                        //subowners
                         FarmsSubowners(widget: widget, state: state,),
                          Column(
                           children: [

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pherobee/config/colors.dart';
 import 'package:pherobee/config/config.dart';
+import 'package:pherobee/models/beekeeper_farm.dart';
+import 'package:pherobee/models/beekeeper_profile.dart';
+import 'package:pherobee/models/subowner.dart';
 import 'package:pherobee/screens/beehives/beehives_screen.dart';
 import 'package:pherobee/screens/farms/farms_screen.dart';
 import 'package:pherobee/screens/home/widgets/farm_summary.dart';
+import 'package:pherobee/screens/home/widgets/farms_widget.dart';
+import 'package:pherobee/screens/home/widgets/global_state.dart';
 import 'package:pherobee/screens/shared_widgets/navbar.dart';
 import 'package:pherobee/screens/shared_widgets/title_widget.dart';
 import 'package:pherobee/utils/types.dart';
@@ -24,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileCubit>().loadProfile();
   }
 
   @override
@@ -32,139 +36,234 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileNotLoaded) {
-              return const Text("Profile not Loaded");
-            } else if (state is ProfileLoading) {
-              return const CircularProgressIndicator();
-            } else if (state is BeekeeperProfileLoaded) {
-              return Center(
-                child: SizedBox(
-                  height: context.height,
-                  width: context.width * 0.9,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(context.medium,
-                            context.small, context.medium, context.small),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(Icons.notifications_none_outlined,
-                                size: context.high * 1.25),
-                          ],
+        child: SingleChildScrollView(
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileNotLoaded) {
+                // todo error screen
+                return const Text("Profile not Loaded");
+              } else if (state is ProfileLoading) {
+                // todo loading screen
+                return const CircularProgressIndicator();
+              } else if (state is BeekeeperProfileLoaded) {
+                final List<BeekeeperFarm> farms = state.beekeeper.farms!
+                    .getRange(
+                    0,
+                    state.beekeeper.farms!.length >= 2
+                        ? 2
+                        : state.beekeeper.farms!.length)
+                    .toList();
+                final List<Subowner> subowners = state.beekeeper.subowners!
+                    .getRange(
+                    0,
+                    state.beekeeper.subowners!.length >= 2
+                        ? 2
+                        : state.beekeeper.subowners!.length)
+                    .toList();
+                return Center(
+                  child: SizedBox(
+                    // height: context.height,
+                    width: context.width * 0.9,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(context.medium,
+                              context.small, context.medium, context.small),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(Icons.notifications_none_outlined,
+                                  size: context.high * 1.25),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: context.height * 0.15,
-                        decoration: const BoxDecoration(
-                            color: AppColors.blueColor3,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                      ),
-                      state.beekeeper.farms!.isNotEmpty
-                          ? Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          0, context.medium, 0, context.medium),
-                                      width: context.width * 0.9,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          TitleWidget(
-                                              title:
-                                                  "My Farms(${state.beekeeper!.farms!.length})"),
-                                          InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      const AddFarmDialog(),
-                                                );
-                                              },
-                                              child: const Icon(Icons.add)),
-                                        ],
-                                      )),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          ...state.beekeeper.farms!.map(
-                                            (e) => InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          FarmsScreen(
-                                                        beehives: state
-                                                            .beekeeper.beehives!
-                                                            .where((element) => e
-                                                                .beehivesId!
-                                                                .contains(
-                                                                    element
-                                                                        .sId))
-                                                            .toList(),
-                                                        location: e.location!,
-                                                        name: e.name!,
-                                                        subowners: state
-                                                            .beekeeper
-                                                            .subowners!
-                                                            .where((element) =>
-                                                                element
-                                                                    .farmAccess!
-                                                                    .contains(
-                                                                        e.sId))
-                                                            .toList(),
-                                                        sId: e.sId!,
-                                                      ),
-                                                    ));
-                                              },
-                                              child: FarmSummary(
-                                                beehivesNumber:
-                                                    e.beehivesId!.length,
-                                                // todo to be deleted
-                                                farmIsInDanger: true,
-                                                subownersNumber: 13,
-                                                farmName: e.name!,
-                                                location: e.location!,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              0, context.small, 0, context.small),
+                          height: context.height * 0.15,
+                          decoration: const BoxDecoration(
+                              color: AppColors.blueColor3,
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(20))),
+                        ),
+                        GlobalStateHomeWidget(state: state),
+                        FarmsHomeWidgets(farms: farms, state: state),
+
+                        ///////////////////////////////////////////////////
+                        state.beekeeper.subowners!.isNotEmpty
+                            ? Column(
+                          children: [
+                            Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0, context.medium, 0, context.medium),
+                                width: context.width * 0.9,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TitleWidget(
+                                        title:
+                                        "My Subowners(${state.beekeeper!
+                                            .subowners!.length})"),
+                                    InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                            const AddFarmDialog(),
+                                          );
+                                        },
+                                        child: const Icon(Icons.add)),
+                                  ],
+                                )),
+                            Column(
+                              children: [
+                                ...subowners.map(
+
+                                        (e) =>
+                                        SubownerHomeWidget(subowner: e,)),
+                                Container(
+                                    width: context.width * 0.4,
+                                    padding: EdgeInsets.fromLTRB(
+                                        context.medium,
+                                        context.small * 1.5,
+                                        context.medium,
+                                        context.small * 1.5),
+                                    margin: EdgeInsets.all(
+                                        context.small * 0.5),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(30),
+                                        color: AppColors.thirdColor),
+                                    child: const Text(
+                                      "Show More",
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ],
                             )
-                          : InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BeehivesScreen(
-                                          classifyBeehives: ClassifyBeehives(
-                                              state.beekeeper)),
-                                    ));
-                              },
-                              child: const Text(
-                                  "No farms yet, click to check your beehives ")),
-                    ],
+                          ],
+                        )
+                            : Column(
+                          children: [
+                            Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0, context.medium, 0, context.medium),
+                                width: context.width * 0.9,
+                                child: const Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TitleWidget(title: "Farms"),
+                                  ],
+                                )),
+                            Container(
+                              padding: EdgeInsets.all(context.small),
+                              margin: EdgeInsets.fromLTRB(
+                                  0,
+                                  context.small / 2,
+                                  0,
+                                  context.small / 2),
+                              width: context.width * 0.9,
+                              height: context.height * 0.13,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColors.primaryColor
+                                        .withOpacity(0.5),
+                                    width: 3,
+                                    style: BorderStyle.solid),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(20)),
+                              ),
+                              child: const Center(
+                                child: Icon(Icons.add),
+                              ),
+                            ),
+                          ],
+                        )
+                        ///////////////////////////////////////////////////
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else if (state is ProfileError) {
-              return ErrorToLoad(error: state.error);
-            } else {
-              return const Text("D5almna fl Else");
-            }
-          },
+                );
+              } else if (state is ProfileError) {
+                return ErrorToLoad(error: state.error);
+              } else {
+                return const Text("D5almna fl Else");
+              }
+            },
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class SubownerHomeWidget extends StatelessWidget {
+  const SubownerHomeWidget({super.key, required this.subowner});
+
+  final Subowner subowner;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(context.small),
+      margin: EdgeInsets.fromLTRB(0, context.small / 2, 0, context.small / 2),
+      width: context.width * 0.9,
+      height: context.height * 0.13,
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.primaryColor,
+            width: 2,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+              padding: EdgeInsets.all(context.medium),
+              decoration: BoxDecoration(
+                  color: AppColors.thirdColor,
+                  borderRadius: BorderRadius.circular(100)),
+              child: Icon(
+                Icons.person,
+                size: context.high * 2,
+              )),
+          SizedBox(
+              width: context.width * 0.5, child: Text(subowner.email!)),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                  onTap: () {
+                    showModalBottomSheet(context: context,
+                      builder: (context) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.photo),
+                            title: const Text('Choose from Photos'),
+                            onTap: () {
+                              // Handle the photo selection
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.camera),
+                            title: const Text('Take a Picture'),
+                            onTap: () {
+                              // Handle taking a picture
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ));
+                  },
+                  child: Icon(Icons.edit)),
+              Icon(Icons.delete_sharp),
+            ],
+          ),
+        ],
       ),
     );
   }

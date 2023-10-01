@@ -2,7 +2,7 @@
 class HiveLog {
   String? sId;
   String? deviceId;
-  String? timestamp;
+  DateTime? timestamp;
   double? temperatureF;
   double? temperatureC;
   double? humidity;
@@ -27,7 +27,7 @@ class HiveLog {
     deviceId = json['deviceId'];
 
     print(json['timestamp']);
-    timestamp = json['timestamp'];
+    timestamp =DateTime.parse(json['timestamp']) ;
     if(json['temperature_f']!=null && json['temperature_f'] is int ){
       temperatureF = (json['temperature_f']as int).toDouble();
     }else{

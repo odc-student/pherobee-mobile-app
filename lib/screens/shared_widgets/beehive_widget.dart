@@ -54,23 +54,26 @@ class BeehiveWidget extends StatelessWidget {
             },
             child: SizedBox(
               height: context.width * .3,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   BeehiveLogUnit(
                       danger: true,
                       logType: LogType.temperature,
-                      value: beehive.hiveLog!.last.temperatureC.toString()!="null"?"${beehive.hiveLog!.last.temperatureC}C":"null"),
+                      // value: beehive.hiveLog!.last.temperatureC.toString()!="null"?"${beehive.hiveLog!.last.temperatureC}C":"null"),
+                      value: "30"),
                   BeehiveLogUnit(
 
                       logType: LogType.humidity,
                       danger: false,
-                      value:  beehive.hiveLog!.last.humidity.toString()!="null"?"${ beehive.hiveLog!.last.humidity.toString().substring(0, beehive.hiveLog!.last.humidity.toString().indexOf(".") + 3)} %":"null",),
-                  if(beehive.hiveLog!.last.weight!=null)BeehiveLogUnit(
+                      // value:  beehive.hiveLog!.last.humidity.toString()!="null"?"${ beehive.hiveLog!.last.humidity.toString().substring(0, beehive.hiveLog!.last.humidity.toString().indexOf(".") + 3)} %":"null",),
+                      value:"30"),
+                  BeehiveLogUnit(
 
                       logType: LogType.weight,
                       danger: false,
-                      value: beehive.hiveLog!.last.weight!.toString()!="null"?"${beehive.hiveLog!.last.weight.toString().substring(0,beehive.hiveLog!.last.weight.toString().indexOf(".")+3)} g":"null"),
+                      // value:  beehive.hiveLog!.last.weight!.toString()!="null"?"${beehive.hiveLog!.last.weight.toString().substring(0,beehive.hiveLog!.last.weight.toString().indexOf(".")+3)} g":"null"),
+                      value:  "30",)
                 ],
               ),
             ),

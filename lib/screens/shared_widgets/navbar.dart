@@ -66,13 +66,13 @@ class Navbar extends StatelessWidget {
                   NavItemWidget(
                       title: "Farms",
                       path: "assets/images/farms.png",
-                      onTap: () {onTap(4);}),
+                      onTap: () {onTap(3);}),
                   NavItemWidget(
                       title: "Subowners",
                       path: "assets/images/subowner.png",
                       onTap: () {
-                        onTap(5);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SubownersScreen(),));
+                        onTap(4);
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => const SubownersScreen(),));
                       }),
                 ],
               ),

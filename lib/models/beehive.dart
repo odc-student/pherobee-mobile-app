@@ -6,7 +6,7 @@ class Beehive {
   String? status;
   String? serialNumber;
   String? beekeeper;
-
+  DateTime? createdDate;
   Beehive({
     this.hiveLog,
     this.sId,
@@ -14,7 +14,6 @@ class Beehive {
     this.serialNumber,
     this.beekeeper,
   });
-
   Beehive.fromJson(Map<String, dynamic> json) {
     if (json['hiveLog'] != null) {
       hiveLog = <HiveLog>[];
@@ -24,10 +23,10 @@ class Beehive {
       });
     }
     sId = json['_id'];
+    createdDate= DateTime.parse(json['createdDate']);
     status = json['status'];
     serialNumber = json['serialNumber'];
     beekeeper = json['beekeeper'];
-
   }
 
   Map<String, dynamic> toJson() {
@@ -38,6 +37,8 @@ class Beehive {
     data['_id'] = sId;
     data['status'] = status;
     data['serialNumber'] = serialNumber;
+
+    data['createdDate']= createdDate;
     data['beekeeper'] = beekeeper;
     return data;
   }

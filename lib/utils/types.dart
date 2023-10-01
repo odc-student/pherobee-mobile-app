@@ -52,9 +52,9 @@ class ChartsLog{
     print("hivelog");
     print(hiveLog.length);
     for (var value in hiveLog) {
-      if(value.temperatureC!=null)temperatureData.add(ChartData(DateTime.parse(value.timestamp!), value.temperatureC!));
-      if(value.humidity!=null)humidityData.add(ChartData(DateTime.parse(value.timestamp!), value.humidity!));
-      if(value.weight!=null)weightData.add(ChartData(DateTime.parse(value.timestamp!), value.weight!));
+      if(value.temperatureC!=null)temperatureData.add(ChartData(value.timestamp!, value.temperatureC!));
+      if(value.humidity!=null)humidityData.add(ChartData(value.timestamp!, value.humidity!));
+      if(value.weight!=null)weightData.add(ChartData(value.timestamp!, value.weight!));
     }
   }
 }
