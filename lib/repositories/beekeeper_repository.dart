@@ -35,9 +35,9 @@ class BeekeeperRepository {
     return await  _beekeeperService.editFarm(token, farmId,name,location);
   }
 
-  Future<Header> createFarm(String token, String name, String location) async {
+  Future<Header> createFarm(String token, String name, double long ,double lat, String location) async {
 
-    return await _beekeeperService.createFarm(token, name,location);
+    return await _beekeeperService.createFarm(token, name, long, lat,location);
   }
 
   Future<Header> associateBeehiveToFarm(String token, String farmId, String beehiveId) async {
@@ -56,4 +56,9 @@ class BeekeeperRepository {
   Future<Header> deleteFarmFromSubowner(String token,String subownerId, String farmId) async {
     return await _beekeeperService.deleteFarmFromSubowner(token, subownerId,farmId);
   }
+  Future<Header>createSubownerAndAssignFarm(String token, String subownerName,String subownerEmail, String subownerPassword, String farmId)async {
+    return await _beekeeperService.createSubownerAndAssignFarm(token, subownerName,  subownerEmail,subownerPassword,farmId);
+  }
+
+
 }

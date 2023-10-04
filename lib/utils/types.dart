@@ -58,3 +58,10 @@ class ChartsLog{
     }
   }
 }
+
+
+enum ButtonType{
+  success,
+  error,
+  remove
+}

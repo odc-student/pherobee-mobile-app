@@ -126,7 +126,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> createFarm(String name, String location) async {
+  Future<void> createFarm(String name, double long ,double lat, String location) async {
     emit(ProfileLoading());
     try {
       //String token = await _loadToken();
@@ -134,7 +134,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       String token = localData.token;
 
       Header header =
-          await _beekeeperRepository.createFarm(token, name, location);
+          await _beekeeperRepository.createFarm(token, name,long,lat, location);
       await loadProfile();
       if (!header.success!) {
         emit(ProfileError(header.message!));
@@ -207,6 +207,22 @@ class ProfileCubit extends Cubit<ProfileState> {
       String token = localData.token;
       Header header = await _beekeeperRepository.deleteFarmFromSubowner(
           token, subownerId, farmId);
+      await loadProfile();
+      if (!header.success!) {
+        emit(ProfileError(header.message!));
+      }
+    } catch (e) {
+      emit(ProfileError(e.toString()));
+    }
+  }
+  Future<void> createSubownerAndAssignFarm(String subownerName, String subownerEmail,subownerPassword , String farmId) async {
+    emit(ProfileLoading());
+    try {
+      //String token = await _loadToken();
+      LocalData localData = LocalData();
+      String token = localData.token;
+      Header header = await _beekeeperRepository.createSubownerAndAssignFarm(
+          token, subownerName,subownerEmail,subownerPassword , farmId);
       await loadProfile();
       if (!header.success!) {
         emit(ProfileError(header.message!));

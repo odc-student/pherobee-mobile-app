@@ -6,12 +6,13 @@ class SubownerFarm {
   List<Beehive>? beehivesId;
   String? name;
   DateTime? createdDate;
-
+  bool? deletable;
   SubownerFarm({this.sId, this.location, this.beehivesId, this.name});
 
   SubownerFarm.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     location = json['location'];
+    deletable = json['deletable'];
     createdDate= DateTime.parse(json['createdDate']);
     print("object");
     if (json['beehives'] != null) {
@@ -28,6 +29,7 @@ class SubownerFarm {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['location'] = location;
+    data['deletable'] =deletable;
     data['createdDate']= createdDate;
     if (beehivesId != null) {
       data['beehives'] = beehivesId!.map((v) => v).toList();

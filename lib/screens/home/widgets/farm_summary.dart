@@ -6,15 +6,14 @@ import '../../../config/colors.dart';
 class FarmSummary extends StatelessWidget {
   const FarmSummary({
     super.key,
-    required this.farmIsInDanger,
     required this.farmName,
     required this.location,
     required this.beehivesNumber,
-    required this.subownersNumber,
+    required this.subownersNumber, required this.deletable,
   });
-  final bool farmIsInDanger;
+  final bool deletable;
   final String farmName;
-  final String location;
+  final String? location;
   final int beehivesNumber;
   final int subownersNumber;
   @override
@@ -32,10 +31,12 @@ class FarmSummary extends StatelessWidget {
           // color: AppColors.orangeColor,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Center(child: Image.asset("assets/images/farms_colored.png")),
+          Container(
+              margin: EdgeInsets.fromLTRB(0, 0, context.high*1.5, 0),
+              child: Image.asset("assets/images/farms_colored.png")),
           SizedBox(
             width: context.width * 0.5,
             child: Column(
@@ -46,16 +47,16 @@ class FarmSummary extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Farm $farmName",
+                       farmName,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Row(
+                    if(location!=null)Row(
                       children: [
                         Icon(
                           Icons.location_on,
                           size: context.medium,
                         ),
-                        Text(location),
+                        Text(location!),
                       ],
                     ),
                   ],
@@ -70,7 +71,7 @@ class FarmSummary extends StatelessWidget {
               ],
             ),
           ),
-          const Column(
+          if(deletable)const Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Icon(Icons.edit),

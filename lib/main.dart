@@ -1,10 +1,18 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pherobee/cubits/location/location_cubit.dart';
 import 'package:pherobee/data/authentication_service.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+
 import 'package:pherobee/data/beekeeper_service.dart';
+import 'package:pherobee/data/location_service.dart';
 import 'package:pherobee/data/subowner_service.dart';
+import 'package:pherobee/repositories/location_repository.dart';
 import 'package:pherobee/screens/fake/text.dart';
 import 'package:pherobee/screens/main/main_screen.dart';
 import 'package:pherobee/repositories/authentication_repository.dart';
@@ -29,10 +37,45 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Completer<AndroidMapRenderer?>? initializedRendererCompleter;
+
+  /// Initializes map renderer to the `latest` renderer type for Android platform.
+  ///
+  /// The renderer must be requested before creating GoogleMap instances,
+  /// as the renderer can be initialized only once per application context.
+  Future<AndroidMapRenderer?> initializeMapRenderer() async {
+    if (initializedRendererCompleter != null) {
+      return initializedRendererCompleter!.future;
+    }
+
+    final Completer<AndroidMapRenderer?> completer =
+    Completer<AndroidMapRenderer?>();
+    initializedRendererCompleter = completer;
+
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      unawaited(mapsImplementation
+          .initializeWithRenderer(AndroidMapRenderer.latest)
+          .then((AndroidMapRenderer initializedRenderer) =>
+          completer.complete(initializedRenderer)));
+    } else {
+      completer.complete(null);
+    }
+
+    return completer.future;
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  final GoogleMapsFlutterPlatform mapsImplementation =
+      GoogleMapsFlutterPlatform.instance;
+  if (mapsImplementation is GoogleMapsFlutterAndroid) {
+    mapsImplementation.useAndroidViewSurface = true;
+    initializeMapRenderer();
+  }
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
@@ -57,7 +100,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
             create: (context) => ProfileCubit(
                 BeekeeperRepository(BeekeeperService()),
-                SubownerRepository(SubownerService())))
+                SubownerRepository(SubownerService()))),
+        BlocProvider(
+            create: (context) => LocationCubit(LocationRepository(LocationService()))),
       ],
       child:  const MaterialApp(
           debugShowCheckedModeBanner: false,

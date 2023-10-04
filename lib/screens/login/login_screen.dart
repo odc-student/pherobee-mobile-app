@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pherobee/config/config.dart';
 import 'package:pherobee/cubits/auth/auth_cubit.dart';
+import 'package:pherobee/cubits/profile/profile_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/colors.dart';
@@ -25,8 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    checkTokenAndNavigate();
     super.initState();
+    checkTokenAndNavigate();
   }
 
   Future<void> checkTokenAndNavigate() async {
@@ -34,6 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     String token = prefs.getString('token') ?? '';
+    print("token");
+    print(token);
     if (token.isNotEmpty) {
       // Navigate to the other screen if token exists
       navigateToHome();
@@ -41,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToHome() {
+    context.read<ProfileCubit>().loadProfile();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

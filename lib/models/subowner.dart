@@ -2,6 +2,7 @@ import 'beekeeper_farm.dart';
 
 class Subowner {
   String? sId;
+  String? username;
   String? email;
   List<String>? farmAccess;
   DateTime? createdDate;
@@ -11,6 +12,7 @@ class Subowner {
   Subowner.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     email = json['email'];
+    username = json['username'];
 
     createdDate= DateTime.parse(json['createdDate']);
     if (json['farmAccess'] != null) {
@@ -25,6 +27,7 @@ class Subowner {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['email'] = email;
+    data['username'] = username;
 
     data['createdDate']= createdDate;
     if (farmAccess != null) {

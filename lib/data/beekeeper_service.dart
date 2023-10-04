@@ -117,20 +117,28 @@ class BeekeeperService {
     }
   }
 
-  Future<Header> createFarm(String token, String name, String location) async {
+  Future<Header> createFarm(String token, String name, double long ,double lat, String location) async {
     try {
       var map = <String, dynamic>{};
       map['name'] = name;
       map['location'] = location;
+      map['long'] = long.toString();
+      map['lat'] = lat.toString();
+
+      print("Hello");
+      print(map);
+      print("${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/create/farm");
       final response = await http.post(
           Uri.parse(
             "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/create/farm",
           ),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
+      print("Hello");
+      print(Header.fromJson(json.decode(response.body)["header"]));
       return Header.fromJson(json.decode(response.body)["header"]);
     } catch (e) {
-      throw Exception('Failed to createFarm');
+      throw Exception('Failed to createFarm ${e.toString()}');
     }
   }
 
@@ -201,6 +209,29 @@ class BeekeeperService {
           Uri.parse(
             "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/delete/farm_from_subowner",
           ),
+          headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+          body: map);
+
+      return Header.fromJson(json.decode(response.body)["header"]);
+    } catch (e) {
+      throw Exception('Error: ${e.toString()}');
+    }
+  }
+
+
+  Future<Header> createSubownerAndAssignFarm(
+      String token, String subownerName, String subownerEmail, String subownerPassword, String farmId) async {
+    try {
+      var map = <String, dynamic>{};
+      map['farmId'] = farmId;
+      map['username'] = subownerName;
+      map['email'] = subownerEmail;
+      map['password'] = subownerPassword;
+      final response = await http.post(
+          Uri.parse(
+            "${dotenv.env['API_ENDPOINT']}/v1/api/beekeepers/create/create_subowner/assign/farm_to_subowner",
+          ),
+
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
           body: map);
 

@@ -6,7 +6,7 @@ import 'package:pherobee/models/beekeeper_farm.dart';
 import 'package:pherobee/models/beekeeper_profile.dart';
 import 'package:pherobee/models/subowner.dart';
 import 'package:pherobee/screens/beehives/beehives_screen.dart';
-import 'package:pherobee/screens/farms/farms_screen.dart';
+import 'package:pherobee/screens/farms/farm_screen.dart';
 import 'package:pherobee/screens/home/widgets/farm_summary.dart';
 import 'package:pherobee/screens/home/widgets/farms_widget.dart';
 import 'package:pherobee/screens/home/widgets/global_state.dart';
@@ -46,13 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // todo loading screen
                 return const CircularProgressIndicator();
               } else if (state is BeekeeperProfileLoaded) {
-                final List<BeekeeperFarm> farms = state.beekeeper.farms!
-                    .getRange(
-                    0,
-                    state.beekeeper.farms!.length >= 2
-                        ? 2
-                        : state.beekeeper.farms!.length)
-                    .toList();
+
                 final List<Subowner> subowners = state.beekeeper.subowners!
                     .getRange(
                     0,
@@ -66,17 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: context.width * 0.9,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(context.medium,
-                              context.small, context.medium, context.small),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(Icons.notifications_none_outlined,
-                                  size: context.high * 1.25),
-                            ],
-                          ),
-                        ),
+
                         Container(
                           margin: EdgeInsets.fromLTRB(
                               0, context.small, 0, context.small),
@@ -87,100 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               BorderRadius.all(Radius.circular(20))),
                         ),
                         GlobalStateHomeWidget(state: state),
-                        FarmsHomeWidgets(farms: farms, state: state),
+                        FarmsUnitWidgets( state: state),
 
-                        ///////////////////////////////////////////////////
-                        state.beekeeper.subowners!.isNotEmpty
-                            ? Column(
-                          children: [
-                            Container(
-                                padding: EdgeInsets.fromLTRB(
-                                    0, context.medium, 0, context.medium),
-                                width: context.width * 0.9,
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TitleWidget(
-                                        title:
-                                        "My Subowners(${state.beekeeper!
-                                            .subowners!.length})"),
-                                    InkWell(
-                                        onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                            const AddFarmDialog(),
-                                          );
-                                        },
-                                        child: const Icon(Icons.add)),
-                                  ],
-                                )),
-                            Column(
-                              children: [
-                                ...subowners.map(
-
-                                        (e) =>
-                                        SubownerHomeWidget(subowner: e,)),
-                                Container(
-                                    width: context.width * 0.4,
-                                    padding: EdgeInsets.fromLTRB(
-                                        context.medium,
-                                        context.small * 1.5,
-                                        context.medium,
-                                        context.small * 1.5),
-                                    margin: EdgeInsets.all(
-                                        context.small * 0.5),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(30),
-                                        color: AppColors.thirdColor),
-                                    child: const Text(
-                                      "Show More",
-                                      textAlign: TextAlign.center,
-                                    )),
-                              ],
-                            )
-                          ],
-                        )
-                            : Column(
-                          children: [
-                            Container(
-                                padding: EdgeInsets.fromLTRB(
-                                    0, context.medium, 0, context.medium),
-                                width: context.width * 0.9,
-                                child: const Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TitleWidget(title: "Farms"),
-                                  ],
-                                )),
-                            Container(
-                              padding: EdgeInsets.all(context.small),
-                              margin: EdgeInsets.fromLTRB(
-                                  0,
-                                  context.small / 2,
-                                  0,
-                                  context.small / 2),
-                              width: context.width * 0.9,
-                              height: context.height * 0.13,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColors.primaryColor
-                                        .withOpacity(0.5),
-                                    width: 3,
-                                    style: BorderStyle.solid),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(20)),
-                              ),
-                              child: const Center(
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                          ],
-                        )
-                        ///////////////////////////////////////////////////
                       ],
                     ),
                   ),
@@ -202,6 +94,10 @@ class SubownerHomeWidget extends StatelessWidget {
   const SubownerHomeWidget({super.key, required this.subowner});
 
   final Subowner subowner;
+
+  //todo selecting a marker will show the name
+  // https://nominatim.openstreetmap.org/reverse?format=xml&lat=52.5487429714954&lon=-1.81602098644987&zoom=18&addressdetails=1
+
 
   @override
   Widget build(BuildContext context) {
